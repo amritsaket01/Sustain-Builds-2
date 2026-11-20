@@ -14,8 +14,12 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
 const dist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../dist");
-const siteUrl = (process.env.VITE_SITE_URL || "").replace(/\/$/, "");
-if (!siteUrl) console.warn("! VITE_SITE_URL not set: sitemap and canonical URLs will use localhost. Set it before a real deploy.");
+const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+const vercelSiteUrl = vercelUrl
+  ? `https://${vercelUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")}`
+  : "";
+const siteUrl = (process.env.VITE_SITE_URL || vercelSiteUrl).replace(/\/$/, "");
+if (!siteUrl) console.warn("! VITE_SITE_URL not set: sitemap and canonical URLs will use localhost outside Vercel.");
 
 const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".webp": "image/webp", ".png": "image/png", ".json": "application/json", ".txt": "text/plain", ".xml": "application/xml" };
 const server = http.createServer((req, res) => {
