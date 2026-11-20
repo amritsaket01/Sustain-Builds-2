@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Sustain Builds — developer tokens (from the Design basis page)
+   White pages, ink text, one Rust action per view.
+   ------------------------------------------------------------------ */
+@theme {
+  --color-rust: #b5600d;
+  --color-rust-deep: #8a4709;
+  --color-ink: #1d1b19;
+  --color-peach: #f9d4c8;
+  --color-sand: #e3cd92;
+  --color-sage: #ede5da;
+  --color-canvas: #fbf7f1;
+  --color-border: #e5ddd1;
+
+  --font-serif: "Young Serif", Georgia, serif;
+  --font-sans: "Mukta", system-ui, sans-serif;
+
+  /* Stack to one column under 760 px */
+  --breakpoint-md: 47.5rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+
+  --radius-brand: 4px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.6;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif font-normal text-ink;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Focus: 3 px ink outline with 3 px offset, always visible */
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-sand);
+    color: var(--color-ink);
+  }
+
+  img {
+    @apply block max-w-full;
+  }
+
+  /* Native form controls sit on an ink border, 48 px tall */
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%231B1B19' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+  }
+}
+
+@layer components {
+  .field {
+    @apply h-12 w-full appearance-none rounded-[4px] border-2 border-ink bg-white px-3 text-base text-ink placeholder:text-ink/40;
+  }
+  .field-area {
+    @apply min-h-36 w-full rounded-[4px] border-2 border-ink bg-white px-3 py-2.5 text-base text-ink placeholder:text-ink/40;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-ink;
+  }
+}
+
+@layer components {
+  .site-header {
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+    transition:
+      background-color 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .site-header-glass {
+    border-color: rgb(255 255 255 / 18%);
+    background-color: rgb(25 27 24 / 72%);
+  }
+
+  .site-header-glass-scrolled {
+    border-color: rgb(255 255 255 / 18%);
+    background-color: rgb(25 27 24 / 85%);
+    box-shadow: 0 8px 32px rgb(0 0 0 / 18%);
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .site-header-glass {
+      background-color: rgb(25 27 24 / 96%);
+    }
+
+    .site-header-glass-scrolled {
+      background-color: rgb(25 27 24 / 98%);
+    }
+  }
+
+  .home-hero {
+    background-color: #191b18;
+  }
+
+  .home-hero-video,
+  .home-hero-poster,
+  .home-hero-shade {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .home-hero-video,
+  .home-hero-poster {
+    z-index: 0;
+    object-fit: cover;
+    object-position: center 55%;
+  }
+
+  .home-hero-shade {
+    z-index: 1;
+    background: linear-gradient(
+      90deg,
+      rgb(15 23 19 / 72%) 0%,
+      rgb(15 23 19 / 52%) 55%,
+      rgb(15 23 19 / 30%) 100%
+    );
+  }
+
+  .home-hero-enter {
+    animation: home-hero-enter 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .home-hero-enter-1 {
+    animation-delay: 0.08s;
+  }
+
+  .home-hero-enter-2 {
+    animation-delay: 0.18s;
+  }
+
+  .home-hero-enter-3 {
+    animation-delay: 0.3s;
+  }
+
+  .home-hero-enter-4 {
+    animation-delay: 0.42s;
+  }
+
+}
+
+@keyframes home-hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Motion. Deliberate, slow, and switched off for anyone who asks.
+   ------------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.img-reveal {
+  overflow: hidden;
+}
+.img-reveal img {
+  transform: scale(1.04);
+  transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.img-reveal.is-visible img {
+  transform: scale(1);
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.page-enter {
+  animation: page-in 0.45s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .img-reveal img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .page-enter {
+    animation: none;
+  }
+  .site-header {
+    transition: none;
+  }
+  .home-hero-video {
+    display: none;
+  }
+  .home-hero-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+
+/* Cinematic homepage media and glass navigation support. */
+video {
+  display: block;
+}
